@@ -13,8 +13,10 @@ st.title('Food Detection using YOLOv8')
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
-    # Open the image
+    # Open and preprocess the image
     image = Image.open(uploaded_file)
+    image = np.array(image)  # Convert PIL image to numpy array
+    image = image[:, :, ::-1]  # Convert BGR to RGB
     
     # Display the uploaded image
     st.image(image, caption='Uploaded Image', use_column_width=True)
@@ -22,8 +24,7 @@ if uploaded_file is not None:
     st.write("Classifying...")
     
     # Perform inference
-    image_array = np.array(image)
-    results = model(image_array)
+    results = model(image)  # Pass the preprocessed image array
     
     # Get the detection results
     predictions = results.predictions[0]
@@ -38,4 +39,3 @@ if uploaded_file is not None:
             st.write(f"Class: {class_name}, Confidence: {confidence:.2f}")
     else:
         st.write("No objects detected.")
-
