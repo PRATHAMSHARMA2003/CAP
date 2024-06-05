@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np
 
 # Load the trained model
-model = YOLO('best.pt')  # Update the path to your saved model
+model = YOLO('/content/drive/My Drive/your_model_directory/best.pt')  # Update the path to your saved model
 
 # Streamlit app title
 st.title('Food Detection using YOLOv8')
@@ -15,8 +15,8 @@ uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png
 if uploaded_file is not None:
     # Open and preprocess the image
     image = Image.open(uploaded_file)
+    image = image.convert("RGB")  # Convert to RGB mode
     image = np.asarray(image)  # Convert PIL image to numpy array
-    image = image[:, :, ::-1]  # Convert BGR to RGB
     
     # Display the uploaded image
     st.image(image, caption='Uploaded Image', use_column_width=True)
@@ -39,4 +39,3 @@ if uploaded_file is not None:
             st.write(f"Class: {class_name}, Confidence: {confidence:.2f}")
     else:
         st.write("No objects detected.")
-
