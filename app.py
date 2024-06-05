@@ -6,7 +6,7 @@ import numpy as np
 # Load the trained model
 model = YOLO('best.pt')  # Update the path to your saved model
 
-# Streamlit app title
+# Streamlit app itle
 st.title('Food Detection using YOLOv8')
 
 # Upload an image
@@ -27,7 +27,7 @@ if uploaded_file is not None:
     results = model(image)  # Pass the preprocessed image array
     
     # Get the detection results
-    predictions = results.predictions[0]
+    predictions = results.pred[0]
     
     # Check if any detections were made
     if predictions is not None and len(predictions) > 0:
@@ -39,3 +39,4 @@ if uploaded_file is not None:
             st.write(f"Class: {class_name}, Confidence: {confidence:.2f}")
     else:
         st.write("No objects detected.")
+
