@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np
 
 # Load the trained model
-model = YOLO('/content/drive/My Drive/your_model_directory/best.pt')  # Update the path to your saved model
+model = YOLO('best.pt')  # Update the path to your saved model
 
 # Streamlit app title
 st.title('Food Detection using YOLOv8')
