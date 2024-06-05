@@ -2,10 +2,9 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
-import io
 
 # Load the trained model
-model = YOLO('best.pt')  # Replace with the actual path to your trained model
+model = YOLO('best.pt')  # Update the path to your saved model
 
 # Streamlit app title
 st.title('Food Detection using YOLOv8')
@@ -26,10 +25,15 @@ if uploaded_file is not None:
     image_array = np.array(image)
     results = model(image_array)
     
-    # Print the results
-    st.write("Detected objects:")
-    st.write(results.pandas().xyxy[0])  # DataFrame of detection results
+    # Process detection results
+    detections = results.xyxy[0] if len(results.xyxy) > 0 else []
     
-    # Visualize the results
-    results_img = results.render()[0]  # Render the detections
-    st.image(results_img, caption='Detected Image', use_column_width=True)
+    if len(detections) > 0:
+        # Display detected objects
+        st.write("Detected objects:")
+        for detection in detections:
+            class_name = model.names[int(detection[5])]
+            confidence = detection[4]
+            st.write(f"Class: {class_name}, Confidence: {confidence:.2f}")
+    else:
+        st.write("No objects detected.")
