@@ -25,16 +25,17 @@ if uploaded_file is not None:
     image_array = np.array(image)
     results = model(image_array)
     
+    # Get the detection results
+    predictions = results.predictions[0]
+    
     # Check if any detections were made
-    if results.xyxy:
-        # Process detection results
-        detections = results.xyxy[0]
-        
+    if predictions is not None and len(predictions) > 0:
         # Display detected objects
         st.write("Detected objects:")
-        for detection in detections:
-            class_name = model.names[int(detection[5])]
-            confidence = detection[4]
+        for detection in predictions:
+            class_name = model.names[int(detection[-1])]
+            confidence = detection[-2]
             st.write(f"Class: {class_name}, Confidence: {confidence:.2f}")
     else:
         st.write("No objects detected.")
+
