@@ -25,10 +25,11 @@ if uploaded_file is not None:
     image_array = np.array(image)
     results = model(image_array)
     
-    # Process detection results
-    detections = results.xyxy[0] if len(results.xyxy) > 0 else []
-    
-    if len(detections) > 0:
+    # Check if any detections were made
+    if results.xyxy:
+        # Process detection results
+        detections = results.xyxy[0]
+        
         # Display detected objects
         st.write("Detected objects:")
         for detection in detections:
